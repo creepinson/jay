@@ -1,0 +1,50 @@
+---
+kind: pipeline
+type: docker
+name: default
+
+steps:
+  - name: build
+    image: alpine:latest
+    commands:
+      - "apk --no-cache add clang clang-dev ninja curl libc-dev linux-headers cmake git"
+      - "git clone https://github.com/doctest/doctest && \
+        cd doctest && cmake \
+        -DCMAKE_BUILD_TYPE=Debug \
+        -DCMAKE_CXX_COMPILER=clang++ \
+        -G Ninja -B build && \
+        cmake --build build --target install \
+        && cd .."
+      - "git clone https://github.com/gabime/spdlog && \
+        cd spdlog && cmake \
+        -DCMAKE_BUILD_TYPE=Debug \
+        -DCMAKE_CXX_COMPILER=clang++ \
+        -G Ninja -B build && \
+        cmake --build build --target install \
+        && cd .."
+      - mkdir -p build
+      - "cmake \
+        -DCMAKE_BUILD_TYPE=Debug \
+        -DCMAKE_CXX_COMPILER=clang++ \
+        -G Ninja -B build"
+      - "cmake --build build --target all -j"
+  - name: test
+    image: alpine:latest
+    commands:
+      - "apk --no-cache add clang clang-dev ninja curl libc-dev linux-headers cmake git"
+      - "git clone https://github.com/doctest/doctest && \
+        cd doctest && cmake \
+        -DCMAKE_BUILD_TYPE=Debug \
+        -DCMAKE_CXX_COMPILER=clang++ \
+        -G Ninja -B build && \
+        cmake --build build --target install \
+        && cd .."
+      - "git clone https://github.com/gabime/spdlog && \
+        cd spdlog && cmake \
+        -DCMAKE_BUILD_TYPE=Debug \
+        -DCMAKE_CXX_COMPILER=clang++ \
+        -G Ninja -B build && \
+        cmake --build build --target install \
+        && cd .."
+      - cmake --build build --target all -j
+      - ./build/jay_test

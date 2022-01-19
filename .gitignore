@@ -1,0 +1,10 @@
+*.log*
+*.env*
+!.env.example
+.DS_Store
+build/
+dist/
+target/
+.ccls-cache
+.cache
+compile-commands.json

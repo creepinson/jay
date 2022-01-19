@@ -1,0 +1,6 @@
+{
+    "clang-tidy.buildPath": "build",
+    "clang-tidy.compilerArgs": [
+        "-std=c++2b"
+    ]
+}
