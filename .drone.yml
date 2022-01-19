@@ -5,9 +5,9 @@ name: default
 
 steps:
   - name: build
-    image: alpine:latest
+    image: silkeh/clang:13
     commands:
-      - "apk --no-cache add clang clang-dev ninja curl libc-dev linux-headers cmake git"
+      - "apt install -y add ninja"
       - "git clone https://github.com/doctest/doctest && \
         cd doctest && cmake \
         -DCMAKE_BUILD_TYPE=Debug \
@@ -29,9 +29,9 @@ steps:
         -G Ninja -B build"
       - "cmake --build build --target all -j"
   - name: test
-    image: alpine:latest
+    image: silkeh/clang:13
     commands:
-      - "apk --no-cache add clang clang-dev ninja curl libc-dev linux-headers cmake git"
+      - "apt install -y add ninja"
       - "git clone https://github.com/doctest/doctest && \
         cd doctest && cmake \
         -DCMAKE_BUILD_TYPE=Debug \
